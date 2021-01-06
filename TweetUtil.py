@@ -39,7 +39,7 @@ class TweetUtil():
         }
         Payload = json.dumps(input_event)
         res = boto3.client('lambda').invoke(
-            FunctionName='kusoripu_function3',
+            FunctionName='kusoripu-function-dev-transformer',
             InvocationType='RequestResponse', # Event or RequestResponse
             Payload=Payload
             )
