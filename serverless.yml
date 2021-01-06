@@ -1,24 +1,20 @@
-service: auto-deploy-lambda
+service: kusoripu-function
 provider:
   name: aws
-  runtime: python3.7
   region: us-east-2
-  role: ${env:AWS_LAMBDA_ROLE_ARN}
-  stage: prod
+  timeout: 120
 
   environment:
     SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
 
-custom:
-  pythonRequirements:
-    dockerizePip: true
-    slim: true
-
 package:
-  individually: true
+  exclude:
+    - Dockerfile
+    - docker-compose.yml
 
 functions:
-  slack:
-    handler: src/index.post
-    description: "Post message to Slack"
-    timeout: 60
+  twitter:
+    runtime: python3.7
+    handler: lambda_function.lambda_handler
+    description: "twitter API"
+    timeout: 60 
