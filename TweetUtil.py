@@ -2,15 +2,16 @@ from requests_oauthlib import OAuth1Session
 import urllib.request
 import json
 import boto3
+import os
 
 
 class TweetUtil():
 
     def __init__(self):
-        self.CK = "vPVdfstGdvW3uEc4CALVeTvjf"
-        self.CS = "ZVSff6RDG3l5LcG6NWvyKZgn8MVD01rwZZ0MPTwC4hplSzpl0r"
-        self.AT = "3282531025-S7EszUJNYeNnjRdnek6xTolfxCVkf1wj2MX85fJ"
-        self.AS = "TpJwvMJvKnWm2horycmU3fP2jUSHwMYVzBsVwvjP0OksF"
+        self.CK = os.environ['CK']
+        self.CS = os.environ['CS']
+        self.AT = os.environ['AT']
+        self.AS = os.environ['AS']
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
         self.user_id_list = [1300452125458067457,
                              816932493962031104, 4444885817, 2799898254, 3282531025]
