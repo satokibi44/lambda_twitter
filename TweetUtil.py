@@ -14,7 +14,7 @@ class TweetUtil():
         self.AS = "TpJwvMJvKnWm2horycmU3fP2jUSHwMYVzBsVwvjP0OksF"
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
         self.user_id_list = [1300452125458067457,
-                             816932493962031104, 4444885817, 2799898254, 3282531025]
+                             816932493962031104, 4444885817, 2799898254]
 
     def get_timeline(self):
         url = "https://api.twitter.com/1.1/statuses/home_timeline.json?count=200"
