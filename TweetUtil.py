@@ -3,6 +3,7 @@ import urllib.request
 import json
 import boto3
 import os
+import requests
 
 
 class TweetUtil():
@@ -35,21 +36,12 @@ class TweetUtil():
         return
 
     def excute_reply(self, tweet_text, tweet_id):
-        input_event = {
-        "text": tweet_text
-        }
-        Payload = json.dumps(input_event)
-        res = boto3.client('lambda').invoke(
-            FunctionName='kusoripu-transformer-dev-api',
-            InvocationType='RequestResponse', # Event or RequestResponse
-            Payload=Payload
-            )
-        payload = res['Payload'].read().decode('utf-8')
-        
-        json_load = json.loads(payload)
-        reply = json_load['body']
-        json_load = json.loads(reply)
-        reply = json_load['decode_sentence']
+        url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-dev-api"
+        param = {'text': tweet_text}
+        res = requests.post(url, data=json.dumps(param))
+
+        req_body = json.loads(res['body'])
+        reply = req_body['decode_sentence']
         
         print("decode_sentence:", reply)
 
