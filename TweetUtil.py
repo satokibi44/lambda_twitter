@@ -39,8 +39,7 @@ class TweetUtil():
         url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-dev-api"
         param = {'text': tweet_text}
         res = requests.post(url, data=json.dumps(param))
-
-        req_body = json.loads(res['body'])
+        req_body = res.json()
         reply = req_body['decode_sentence']
         
         print("decode_sentence:", reply)
