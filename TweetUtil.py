@@ -41,9 +41,6 @@ class TweetUtil():
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
         reply = req_body['decode_sentence']
-
-        req_body = json.loads(res['body'])
-        reply = req_body['decode_sentence']
         
         print("decode_sentence:", reply)
 
