@@ -4,6 +4,7 @@ import json
 import boto3
 import os
 import requests
+import pickle
 
 
 class TweetUtil():
@@ -22,14 +23,20 @@ class TweetUtil():
         res = self.session.get(url=url)
         tweet_id_list = []
         tweet_text_list = []
+        latest_tweet_id = 0
+        with open('latest_tweet_id.pickle', 'rb') as rb:
+            latest_tweet_id = pickle.load(rb)
         if res.status_code == 200:
             timelines = res.json()
             for tweet in timelines:
-                if (tweet['user']['id'] in self.user_id_list):
+                if (tweet['user']['id'] in self.user_id_list and tweet['user']['id'] > latest_tweet_id):
                     tweet_id = tweet['id']
                     tweet_text = tweet['text']
                     tweet_id_list.append(tweet_id)
                     tweet_text_list.append(tweet_text)
+                    latest_tweet_id = tweet['user']['id']
+            with open('latest_tweet_id.pickle', 'wb') as wb:
+                pickle.dump(latest_tweet_id, wb)
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
