@@ -26,9 +26,9 @@ class TweetUtil():
         latest_tweet_id = 0
         BUCKET_NAME = 'kusoripu02'
         s3 = boto3.client('s3')
-        file_name = 'latest_tweet_id.pickle'
-        res = s3.get_object(Bucket=BUCKET_NAME, Key=file_name)
-        body = res['Body'].read()  # b'テキストの中身'
+        file_name = 'latest_tweet_id.txt'
+        content = s3.get_object(Bucket=BUCKET_NAME, Key=file_name)
+        body = content['Body'].read()  # b'テキストの中身'
         latest_tweet_id = body.decode('utf-8')
         print(latest_tweet_id)
         if res.status_code == 200:
@@ -40,6 +40,7 @@ class TweetUtil():
                     tweet_id_list.append(tweet_id)
                     tweet_text_list.append(tweet_text)
                     latest_tweet_id = tweet['user']['id']
+            s3 = boto3.resource('s3')
             bucket = s3.Object(BUCKET_NAME, file_name)
             bucket.put(Body=latest_tweet_id)
             return tweet_id_list, tweet_text_list
@@ -53,7 +54,6 @@ class TweetUtil():
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
         reply = req_body['decode_sentence']
-        
         print("decode_sentence:", reply)
 
         url = "https://api.twitter.com/1.1/statuses/update.json"
