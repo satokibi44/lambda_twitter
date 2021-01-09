@@ -24,8 +24,13 @@ class TweetUtil():
         tweet_id_list = []
         tweet_text_list = []
         latest_tweet_id = 0
-        with open('latest_tweet_id.pickle', 'rb') as rb:
-            latest_tweet_id = pickle.load(rb)
+        BUCKET_NAME = 'kusoripu02'
+        s3 = boto3.client('s3')
+        file_name = 'latest_tweet_id.pickle'
+        res = s3.get_object(Bucket=BUCKET_NAME, Key=file_name)
+        body = res['Body'].read()  # b'テキストの中身'
+        latest_tweet_id = body.decode('utf-8')
+        print(latest_tweet_id)
         if res.status_code == 200:
             timelines = res.json()
             for tweet in timelines:
@@ -35,8 +40,8 @@ class TweetUtil():
                     tweet_id_list.append(tweet_id)
                     tweet_text_list.append(tweet_text)
                     latest_tweet_id = tweet['user']['id']
-            with open('latest_tweet_id.pickle', 'wb') as wb:
-                pickle.dump(latest_tweet_id, wb)
+            bucket = s3.Object(BUCKET_NAME, file_name)
+            bucket.put(Body=latest_tweet_id)
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
