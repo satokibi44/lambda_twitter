@@ -29,12 +29,12 @@ class TweetUtil():
         file_name = 'latest_tweet_id.txt'
         content = s3.get_object(Bucket=BUCKET_NAME, Key=file_name)
         body = content['Body'].read()  # b'テキストの中身'
-        latest_tweet_id = body.decode('utf-8')
+        latest_tweet_id = body.decode()
         print(latest_tweet_id)
         if res.status_code == 200:
             timelines = res.json()
             for tweet in timelines:
-                if (tweet['user']['id'] in self.user_id_list and tweet['user']['id'] > latest_tweet_id):
+                if (tweet['user']['id'] in self.user_id_list and tweet['user']['id'] > int(latest_tweet_id)):
                     tweet_id = tweet['id']
                     tweet_text = tweet['text']
                     tweet_id_list.append(tweet_id)
@@ -42,7 +42,7 @@ class TweetUtil():
                     latest_tweet_id = tweet['user']['id']
             s3 = boto3.resource('s3')
             bucket = s3.Object(BUCKET_NAME, file_name)
-            bucket.put(Body=latest_tweet_id)
+            bucket.put(Body=str(latest_tweet_id))
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
@@ -54,6 +54,7 @@ class TweetUtil():
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
         reply = req_body['decode_sentence']
+
         print("decode_sentence:", reply)
 
         url = "https://api.twitter.com/1.1/statuses/update.json"
