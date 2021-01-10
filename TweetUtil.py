@@ -34,12 +34,12 @@ class TweetUtil():
         if res.status_code == 200:
             timelines = res.json()
             for tweet in timelines:
-                if (tweet['user']['id'] in self.user_id_list and tweet['user']['id'] > int(latest_tweet_id)):
+                if (tweet['user']['id'] in self.user_id_list and tweet['id'] > int(latest_tweet_id)):
                     tweet_id = tweet['id']
                     tweet_text = tweet['text']
                     tweet_id_list.append(tweet_id)
                     tweet_text_list.append(tweet_text)
-                    latest_tweet_id = tweet['user']['id']
+                    latest_tweet_id = tweet['id']
             s3 = boto3.resource('s3')
             bucket = s3.Object(BUCKET_NAME, file_name)
             bucket.put(Body=str(latest_tweet_id))
