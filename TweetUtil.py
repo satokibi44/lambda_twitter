@@ -1,10 +1,12 @@
 from requests_oauthlib import OAuth1Session
 import urllib.request
 import json
-import boto3
+
 import os
 import requests
 import pickle
+
+from S3Util import S3Util
 
 
 class TweetUtil():
@@ -24,22 +26,19 @@ class TweetUtil():
         tweet_id_list = []
         tweet_text_list = []
         latest_tweet_id = 0
-        BUCKET_NAME = 'kusoripu02'
-        s3 = boto3.client('s3')
-        file_name = 'latest_tweet_id.txt'
-        content = s3.get_object(Bucket=BUCKET_NAME, Key=file_name)
-        body = content['Body'].read()  # b'テキストの中身'
-        latest_tweet_id = body.decode()
         print(latest_tweet_id)
         if res.status_code == 200:
             timelines = res.json()
             for tweet in timelines:
-                if (tweet['user']['id'] in self.user_id_list and tweet['id'] > int(latest_tweet_id)):
-                    tweet_id = tweet['id']
-                    tweet_text = tweet['text']
-                    tweet_id_list.append(tweet_id)
-                    tweet_text_list.append(tweet_text)
-                    latest_tweet_id = tweet['id']
+                if (tweet['user']['id'] in self.user_id_list):
+                    s3_util = S3Util()
+                    latest_tweet_id = s3_util.read_latest_tweet_id()
+                    if (tweet['id'] > int(latest_tweet_id)):
+                        tweet_id = tweet['id']
+                        tweet_text = tweet['text']
+                        tweet_id_list.append(tweet_id)
+                        tweet_text_list.append(tweet_text)
+                        latest_tweet_id = tweet['id']
             s3 = boto3.resource('s3')
             bucket = s3.Object(BUCKET_NAME, file_name)
             bucket.put(Body=str(latest_tweet_id))
