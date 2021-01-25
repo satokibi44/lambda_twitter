@@ -82,7 +82,7 @@ class TweetUtil():
         return
 
     def excute_reply(self, tweet_text, tweet_id):
-        url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-dev-api"
+        url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-master-api"
         param = {'text': tweet_text}
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
