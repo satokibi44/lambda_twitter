@@ -49,8 +49,9 @@ class TweetUtil():
         return
 
     def get_reply(self):
-        url = "https://api.twitter.com/1.1/statuses/home_timeline.json?count=200"
-        res = self.session.get(url=url)
+        url = "https://api.twitter.com/1.1/search/tweets.json"
+        params = {'q': '"<クソリプ判定>"', 'count': 200}  # 取得数
+        res = session.get(url, params=params)
         tweet_id_list = []
         tweet_text_list = []
         latest_tweet_id = 0
@@ -58,7 +59,7 @@ class TweetUtil():
         tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
-            timelines = res.json()
+            timelines = res.json()['statuses']
             for tweet in timelines:
                 if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet['text'][:8]=="<クソリプ判定>"):
                     latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
