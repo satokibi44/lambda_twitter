@@ -1,6 +1,7 @@
 # coding: utf-8
 import json
 from TweetUtil import TweetUtil
+import requests
 
 def lambda_handler(event, context):
     tweetUtil = TweetUtil()

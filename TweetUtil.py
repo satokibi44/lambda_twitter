@@ -86,7 +86,12 @@ class TweetUtil():
         param = {'text': tweet_text}
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
-        reply = req_body['decode_sentence']
+        reply = ""
+        try:
+            reply = req_body['decode_sentence']
+        except KeyError as e:
+            print(e)
+            return
 
         print("decode_sentence:", reply)
 
@@ -106,7 +111,12 @@ class TweetUtil():
         param = {'text': tweet_text}
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
-        kusoripu_score = req_body['kusoripu_score']
+        kusoripu_score = ""
+        try:
+            kusoripu_score = req_body['kusoripu_score']
+        except KeyError as e:
+            print(e)
+            return
 
         print("kusoripu_score:", kusoripu_score)
 
