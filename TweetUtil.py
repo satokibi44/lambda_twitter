@@ -28,23 +28,24 @@ class TweetUtil():
         tweet_id_list = []
         tweet_text_list = []
         latest_tweet_id = 0
+        latest_tweet_id_write = 0
         s3_util = S3Util()
         tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
             timelines = res.json()
+            latest_tweet_id = s3_util.read_latest_tweet_id("latest_tweet_id.txt")
             for tweet in timelines:
                 if (tweet['user']['id'] in self.user_id_list):
-                    latest_tweet_id = s3_util.read_latest_tweet_id(
-                        "latest_tweet_id.txt")
                     if (tweet['id'] > int(latest_tweet_id)):
                         tweet_id = tweet['id']
                         tweet_text = tweet_formetter.screening(tweet['text'])
                         tweet_id_list.append(tweet_id)
                         tweet_text_list.append(tweet_text)
-                        latest_tweet_id = tweet['id']
-                        s3_util.write_latest_tweet_id(
-                            "latest_tweet_id.txt", latest_tweet_id)
+                        if latest_tweet_id_write == 0:
+                            latest_tweet_id_write = tweet['id']
+            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(
+                latest_tweet_id, latest_tweet_id_write))
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
@@ -56,25 +57,27 @@ class TweetUtil():
         res = self.session.get(url, params=params)
         tweet_id_list = []
         tweet_text_list = []
-        latest_tweet_id = 0
+        latest_reply_id = 0
+        latest_reply_id_write = 0
         s3_util = S3Util()
         tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
             timelines = res.json()['statuses']
+            latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
             for tweet in timelines:
                 tweet_text = tweet_formetter.screening(tweet['text'])
                 if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
-                    latest_reply_id = s3_util.read_latest_tweet_id(
-                        "latest_reply_id.txt")
                     if (tweet['id'] > int(latest_reply_id)):
                         tweet_id = tweet['id']
                         tweet_id_list.append(tweet_id)
                         tweet_text_list.append(tweet_text[7:])
-                        print(tweet_text[7:])
-                        latest_tweet_id = tweet['id']
-                        s3_util.write_latest_tweet_id(
-                            "latest_tweet_id.txt", latest_tweet_id)
+                        if latest_reply_id_write == 0:
+                            latest_reply_id_write = tweet['id']
+
+            s3_util.write_latest_tweet_id("latest_reply_id.txt", max(
+                latest_reply_id_write, latest_reply_id))
+
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
