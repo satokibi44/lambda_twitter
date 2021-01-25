@@ -44,8 +44,7 @@ class TweetUtil():
                         tweet_text_list.append(tweet_text)
                         if latest_tweet_id_write == 0:
                             latest_tweet_id_write = tweet['id']
-            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(
-                latest_tweet_id, latest_tweet_id_write))
+            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(int(latest_tweet_id), int(latest_tweet_id_write)))
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
@@ -75,8 +74,7 @@ class TweetUtil():
                         if latest_reply_id_write == 0:
                             latest_reply_id_write = tweet['id']
 
-            s3_util.write_latest_tweet_id("latest_reply_id.txt", max(
-                latest_reply_id_write, latest_reply_id))
+            s3_util.write_latest_tweet_id("latest_reply_id.txt", max(int(latest_reply_id_write), int(latest_reply_id)))
 
             return tweet_id_list, tweet_text_list
         else:
