@@ -7,6 +7,7 @@ import requests
 import pickle
 
 from S3Util import S3Util
+from TweetFormetter import TweetFormetter
 
 
 class TweetUtil():
@@ -28,6 +29,7 @@ class TweetUtil():
         tweet_text_list = []
         latest_tweet_id = 0
         s3_util = S3Util()
+        tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
             timelines = res.json()
@@ -36,7 +38,7 @@ class TweetUtil():
                     latest_tweet_id = s3_util.read_latest_tweet_id("latest_tweet_id.txt")
                     if (tweet['id'] > int(latest_tweet_id)):
                         tweet_id = tweet['id']
-                        tweet_text = tweet['text']
+                        tweet_text = tweet_formetter.screening(tweet['text'])
                         tweet_id_list.append(tweet_id)
                         tweet_text_list.append(tweet_text)
                         latest_tweet_id = tweet['id']
@@ -53,6 +55,7 @@ class TweetUtil():
         tweet_text_list = []
         latest_tweet_id = 0
         s3_util = S3Util()
+        tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
             timelines = res.json()
@@ -61,7 +64,7 @@ class TweetUtil():
                     latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
                     if (tweet['id'] > int(latest_reply_id)):
                         tweet_id = tweet['id']
-                        tweet_text = tweet['text']
+                        tweet_text = tweet_formetter.screening(tweet['text'])
                         tweet_id_list.append(tweet_id)
                         tweet_text_list.append(tweet_text)
                         latest_tweet_id = tweet['id']
