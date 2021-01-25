@@ -1,9 +1,9 @@
 import re
-import emoji
+import sys
 
 class TweetFormetter():
 
-    def screening(text):
+    def screening(self, text):
         s = text
 
         # RTを外す
@@ -20,30 +20,27 @@ class TweetFormetter():
                     s = s.replace(s[index_at:], "")
             else:
                 s = s.replace(s[index_at:], "")
-                
+
         # 改行を外す
         while s.find("\n") != -1:
             index_ret = s.find("\n")
             s = s.replace(s[index_ret], "")
-            
+
         # URLを外す
         s = re.sub(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-…]+', "", s)
-        
+
         # 絵文字を「。」に置き換え その１
         non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), '。')
         s = s.translate(non_bmp_map)
-        
-        # 絵文字を「。」に置き換え　その２
-        s = ''.join(c if c not in emoji.UNICODE_EMOJI else '。' for c in s)
-        
+
         # 置き換えた「。」が連続していたら１つにまとめる
         while s.find('。。') != -1:
             index_period = s.find('。。')
             s = s.replace(s[index_period:index_period + 2], '。')
-            
+
         # ハッシュタグを外す
         while s.find('#') != -1:
             index_hash = s.find('#')
             s = s[0:index_hash]
-            
+
         return s

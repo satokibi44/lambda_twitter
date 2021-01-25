@@ -19,7 +19,7 @@ class TweetUtil():
         self.AS = os.environ['AS']
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
         self.user_id_list = [1300452125458067457,
-                             816932493962031104, 4444885817, 2799898254]
+                             816932493962031104, 4444885817, 2799898254, 1353572204915507200]
         self.my_twitter_id = 3282531025
 
     def get_timeline(self):
@@ -35,14 +35,16 @@ class TweetUtil():
             timelines = res.json()
             for tweet in timelines:
                 if (tweet['user']['id'] in self.user_id_list):
-                    latest_tweet_id = s3_util.read_latest_tweet_id("latest_tweet_id.txt")
+                    latest_tweet_id = s3_util.read_latest_tweet_id(
+                        "latest_tweet_id.txt")
                     if (tweet['id'] > int(latest_tweet_id)):
                         tweet_id = tweet['id']
                         tweet_text = tweet_formetter.screening(tweet['text'])
                         tweet_id_list.append(tweet_id)
                         tweet_text_list.append(tweet_text)
                         latest_tweet_id = tweet['id']
-                        s3_util.write_latest_tweet_id("latest_tweet_id.txt",latest_tweet_id)
+                        s3_util.write_latest_tweet_id(
+                            "latest_tweet_id.txt", latest_tweet_id)
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
@@ -50,8 +52,8 @@ class TweetUtil():
 
     def get_reply(self):
         url = "https://api.twitter.com/1.1/search/tweets.json"
-        params = {'q': '"<クソリプ判定>"', 'count': 200}  # 取得数
-        res = session.get(url, params=params)
+        params = {'q': '"クソリプ判定:"', 'count': 200}  # 取得数
+        res = self.session.get(url, params=params)
         tweet_id_list = []
         tweet_text_list = []
         latest_tweet_id = 0
@@ -61,15 +63,18 @@ class TweetUtil():
         if res.status_code == 200:
             timelines = res.json()['statuses']
             for tweet in timelines:
-                if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet['text'][:8]=="<クソリプ判定>"):
-                    latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
+                tweet_text = tweet_formetter.screening(tweet['text'])
+                if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
+                    latest_reply_id = s3_util.read_latest_tweet_id(
+                        "latest_reply_id.txt")
                     if (tweet['id'] > int(latest_reply_id)):
                         tweet_id = tweet['id']
-                        tweet_text = tweet_formetter.screening(tweet['text'])
                         tweet_id_list.append(tweet_id)
-                        tweet_text_list.append(tweet_text)
+                        tweet_text_list.append(tweet_text[7:])
+                        print(tweet_text[7:])
                         latest_tweet_id = tweet['id']
-                        s3_util.write_latest_tweet_id("latest_tweet_id.txt", latest_tweet_id)
+                        s3_util.write_latest_tweet_id(
+                            "latest_tweet_id.txt", latest_tweet_id)
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
@@ -100,7 +105,7 @@ class TweetUtil():
         param = {'text': tweet_text}
         res = requests.post(url, data=json.dumps(param))
         req_body = res.json()
-        kusoripu_score = req_body['decode_sentence']
+        kusoripu_score = req_body['kusoripu_score']
 
         print("kusoripu_score:", kusoripu_score)
 
