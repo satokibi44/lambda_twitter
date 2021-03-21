@@ -19,7 +19,7 @@ class TweetUtil():
         self.AS = os.environ['AS']
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
         self.user_id_list = [1300452125458067457,
-                             816932493962031104, 4444885817, 2799898254, 1353572204915507200]
+                             816932493962031104, 4444885817, 2799898254, 1353572204915507200, 986790045569789953]
         self.my_twitter_id = 3282531025
 
     def get_timeline(self):
@@ -88,7 +88,7 @@ class TweetUtil():
         req_body = res.json()
         reply = ""
         try:
-            reply = req_body['decode_sentence']
+            reply = "クソリプAI「"+req_body['decode_sentence']+"」"
         except KeyError as e:
             print(e)
             return
