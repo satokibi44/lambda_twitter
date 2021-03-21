@@ -88,7 +88,7 @@ class TweetUtil():
         req_body = res.json()
         reply = ""
         try:
-            reply = req_body['decode_sentence']
+            reply = "クソリプAI「"+req_body['decode_sentence']+"」"
         except KeyError as e:
             print(e)
             return
