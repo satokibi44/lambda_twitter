@@ -113,7 +113,7 @@ class TweetUtil():
         req_body = res.json()
         kusoripu_score = ""
         try:
-            kusoripu_score = req_body['kusoripu_score']
+            kusoripu_score = req_body['body']['kusoripu_score']
         except KeyError as e:
             print(e)
             return
