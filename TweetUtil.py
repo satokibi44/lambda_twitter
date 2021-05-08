@@ -107,9 +107,9 @@ class TweetUtil():
         return
 
     def execute_calculate_kusoripuscore(self, tweet_text, tweet_id):
-        url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-bert-master-api"
-        param = {'text': tweet_text}
-        res = requests.post(url, data=json.dumps(param))
+        url = "http://ecs-hands-on-1730037631.us-east-2.elb.amazonaws.com/KusorepCalculater/"
+        param = {'msg': tweet_text}
+        res = requests.get(url, params=param)
         req_body = res.json()
         kusoripu_score = ""
         try:
