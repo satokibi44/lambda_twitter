@@ -4,7 +4,9 @@ provider:
   region: us-east-2
   timeout: 120
   stage: ${opt:stage, self:custom.defaultStage}
-
+  vpc:
+    securityGroupIds: sg-3092424e
+    subnetIds: default-vpc-903483fb
   environment:
     SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
 
