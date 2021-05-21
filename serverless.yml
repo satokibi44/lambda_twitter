@@ -5,8 +5,10 @@ provider:
   timeout: 120
   stage: ${opt:stage, self:custom.defaultStage}
   vpc:
-    securityGroupIds: sg-3092424e
-    subnetIds: default-vpc-903483fb
+    securityGroupIds:
+      - sg-3092424e
+    subnetIds:
+      - subnet-7f130705
   environment:
     SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
 
