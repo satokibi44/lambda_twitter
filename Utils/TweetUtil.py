@@ -53,35 +53,13 @@ class TweetUtil():
             print("ERROR : %d" % res.status_code)
         return
 
-    def get_reply(self):
+    def get_reply(self, keyword):
         url = "https://api.twitter.com/1.1/search/tweets.json"
-        params = {'q': '"クソリプ判定:"', 'count': 200}  # 取得数
+        params = {'q': '"'+keyword+'"', 'count': 200}  # 取得数
         res = self.session.get(url, params=params)
-        tweet_id_list = []
-        tweet_text_list = []
-        latest_reply_id = 0
-        latest_reply_id_write = 0
-        s3_util = S3Util()
-        tweet_formetter = TweetFormetter()
-
         if res.status_code == 200:
             timelines = res.json()['statuses']
-            latest_reply_id = s3_util.read_latest_tweet_id(
-                "latest_reply_id.txt")
-            for tweet in timelines:
-                tweet_text = tweet_formetter.screening(tweet['text'])
-                if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
-                    if (tweet['id'] > int(latest_reply_id)):
-                        tweet_id = tweet['id']
-                        tweet_id_list.append(tweet_id)
-                        tweet_text_list.append(tweet_text[7:])
-                        if latest_reply_id_write == 0:
-                            latest_reply_id_write = tweet['id']
-
-            s3_util.write_latest_tweet_id("latest_reply_id.txt", max(
-                int(latest_reply_id_write), int(latest_reply_id)))
-
-            return tweet_id_list, tweet_text_list
+            return timelines
         else:
             print("ERROR : %d" % res.status_code)
         return
