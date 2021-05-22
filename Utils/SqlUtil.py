@@ -22,10 +22,10 @@ class SqlUtil():
             self.conn.commit()
         self.conn.commit()
 
-    def insert_user(self, twitter_id):
+    def insert_twitterid(self, twitter_id):
         with self.conn.cursor() as cur:
-            insert_sql = 'insert into User (TwitterID) values (%s)'
-            cur.execute(insert_sql, (twitter_id))
+            insert_sql = 'INSERT INTO User (TwitterID) SELECT %s WHERE NOT EXISTS (SELECT * FROM User WHERE TwitterID = %s)'
+            cur.execute(insert_sql, (twitter_id, twitter_id))
             self.conn.commit()
         self.conn.commit()
 
@@ -40,7 +40,7 @@ class SqlUtil():
 
     def delete_twitterid(self, twitter_id):
         with self.conn.cursor() as cur:
-            delete_sql = 'delete from User where (TwitterID) values (%s)'
+            delete_sql = 'delete from User where TwitterID = %s'
             cur.execute(delete_sql, (twitter_id))
             self.conn.commit()
         self.conn.commit()
