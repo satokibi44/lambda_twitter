@@ -35,8 +35,10 @@ class TweetUtil():
 
         if res.status_code == 200:
             timelines = res.json()
-            latest_tweet_id = s3_util.read_latest_tweet_id("latest_tweet_id.txt")
+            latest_tweet_id = s3_util.read_latest_tweet_id(
+                "latest_tweet_id.txt")
             for tweet in timelines:
+                print("tweet", tweet)
                 if (tweet['user']['id'] in self.user_id_list):
                     if (tweet['id'] > int(latest_tweet_id)):
                         tweet_id = tweet['id']
@@ -45,7 +47,8 @@ class TweetUtil():
                         tweet_text_list.append(tweet_text)
                         if latest_tweet_id_write == 0:
                             latest_tweet_id_write = tweet['id']
-            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(int(latest_tweet_id), int(latest_tweet_id_write)))
+            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(
+                int(latest_tweet_id), int(latest_tweet_id_write)))
             return tweet_id_list, tweet_text_list
         else:
             print("ERROR : %d" % res.status_code)
@@ -64,7 +67,8 @@ class TweetUtil():
 
         if res.status_code == 200:
             timelines = res.json()['statuses']
-            latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
+            latest_reply_id = s3_util.read_latest_tweet_id(
+                "latest_reply_id.txt")
             for tweet in timelines:
                 tweet_text = tweet_formetter.screening(tweet['text'])
                 if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
@@ -75,7 +79,8 @@ class TweetUtil():
                         if latest_reply_id_write == 0:
                             latest_reply_id_write = tweet['id']
 
-            s3_util.write_latest_tweet_id("latest_reply_id.txt", max(int(latest_reply_id_write), int(latest_reply_id)))
+            s3_util.write_latest_tweet_id("latest_reply_id.txt", max(
+                int(latest_reply_id_write), int(latest_reply_id)))
 
             return tweet_id_list, tweet_text_list
         else:
