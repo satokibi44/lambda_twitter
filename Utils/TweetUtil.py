@@ -6,7 +6,8 @@ import os
 import requests
 import pickle
 
-from S3Util import S3Util
+from ..Utils.S3Util import S3Util
+from ..Utils.SqlUtil import SqlUtil
 from TweetFormetter import TweetFormetter
 
 
@@ -18,8 +19,8 @@ class TweetUtil():
         self.AT = os.environ['AT']
         self.AS = os.environ['AS']
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
-        self.user_id_list = [1300452125458067457,
-                             816932493962031104, 4444885817, 2799898254, 1353572204915507200, 986790045569789953]
+        sql_util = SqlUtil()
+        self.user_id_list = sql_util.select_twitterid()
         self.my_twitter_id = 3282531025
 
     def get_timeline(self):
