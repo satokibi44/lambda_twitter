@@ -15,7 +15,7 @@ class SqlUtil():
     
     def create_table(self):
         with self.conn.cursor() as cur:
-            create_sql = 'create table if not exist User ( UserID int NOT NULL AUTO_INCREMENT, TwitterID int NOT NULL)'
+            create_sql = 'create table if not exists User (TwitterID int NOT NULL)'
             cur.execute(create_sql)
             self.conn.commit()
         self.conn.commit()
