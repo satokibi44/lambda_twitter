@@ -38,7 +38,6 @@ class TweetUtil():
             latest_tweet_id = s3_util.read_latest_tweet_id(
                 "latest_tweet_id.txt")
             for tweet in timelines:
-                print("tweet", tweet)
                 if (tweet['user']['id'] in self.user_id_list):
                     if (tweet['id'] > int(latest_tweet_id)):
                         tweet_id = tweet['id']
