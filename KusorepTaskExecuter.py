@@ -17,7 +17,7 @@ class KusorepTaskExcuter():
         latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
         for tweet in timelines:
             tweet_text = tweet_formetter.screening(tweet['text'])
-            if (tweet['in_reply_to_user_id'] == self.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
+            if (tweet['in_reply_to_user_id'] == tweet_util.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
                 if (tweet['id'] > int(latest_reply_id)):
                     tweet_id = tweet['id']
                     tweet_id_list.append(tweet_id)
