@@ -24,10 +24,14 @@ functions:
     description: "twitter API"
     timeout: 60 
     environment:
-       CK : "vPVdfstGdvW3uEc4CALVeTvjf"
+       CK : ${env:CK}
        CS : "ZVSff6RDG3l5LcG6NWvyKZgn8MVD01rwZZ0MPTwC4hplSzpl0r"
        AT : "3282531025-S7EszUJNYeNnjRdnek6xTolfxCVkf1wj2MX85fJ"
        AS : "TpJwvMJvKnWm2horycmU3fP2jUSHwMYVzBsVwvjP0OksF"
+       RDS_HOST : "kusorep-twitter.cwomgpjrietf.us-east-2.rds.amazonaws.com"
+       RDS_PASS : "sato310238"
+       RDS_NAME : "admin"
+       RDS_DB_NAME : "UserDB"
     layers:
       - arn:aws:lambda:us-east-2:719378226820:layer:twitter_api:1
       - arn:aws:lambda:us-east-2:719378226820:layer:pymysql2:3

@@ -1,14 +1,14 @@
 import pymysql
 import sys
-
+import os
 
 class SqlUtil():
 
     def __init__(self):
-        rds_host = "kusorep-twitter.cwomgpjrietf.us-east-2.rds.amazonaws.com"
-        password = "sato310238"
-        name = "admin"
-        db_name = "UserDB"
+        rds_host = os.environ['RDS_HOST']
+        password = os.environ['RDS_PASS']
+        name = os.environ['RDS_NAME']
+        db_name = os.environ['RDS_DB_NAME']
         try:
             self.conn = pymysql.connect(
                 host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
