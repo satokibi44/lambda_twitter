@@ -30,6 +30,15 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          CK: ${{ secrets.CK }}
+          CS: ${{ secrets.CS }}
+          AT: ${{ secrets.AT }}
+          AS: ${{ secrets.AS }}
+          RDS_HOST :  ${{ secrets.RDS_HOST }}
+          RDS_PASS :  ${{ secrets.RDS_PASS }}
+          RDS_NAME :  ${{ secrets.RDS_NAME }}
+          RDS_DB_NAME :  ${{ secrets.RDS_DB_NAME }}
+
 
       - name: Notify result to slack
         uses: homoluctus/slatify@master
