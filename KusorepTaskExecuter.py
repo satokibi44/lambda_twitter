@@ -29,5 +29,3 @@ class KusorepTaskExcuter():
                 int(latest_reply_id_write), int(latest_reply_id)))
 
         return tweet_id_list, tweet_text_list
-
-    def reply_kusorep():
