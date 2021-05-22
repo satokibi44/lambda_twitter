@@ -1,7 +1,7 @@
 # coding: utf-8
 import json
-from .Utils.TweetUtil import TweetUtil
-from .Utils.SqlUtil import SqlUtil
+from Utils.TweetUtil import TweetUtil
+from Utils.SqlUtil import SqlUtil
 import requests
 
 def lambda_handler(event, context):

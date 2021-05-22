@@ -6,8 +6,8 @@ import os
 import requests
 import pickle
 
-from ..Utils.S3Util import S3Util
-from ..Utils.SqlUtil import SqlUtil
+from Utils.S3Util import S3Util
+from Utils.SqlUtil import SqlUtil
 from TweetFormetter import TweetFormetter
 
 
