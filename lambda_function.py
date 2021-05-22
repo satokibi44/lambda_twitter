@@ -1,17 +1,18 @@
 # coding: utf-8
 import json
 from Utils.TweetUtil import TweetUtil
-from Utils.SqlUtil import SqlUtil
 from KusorepTaskExecuter import KusorepTaskExcuter
+from UserRegistry import UserRegistry
 import requests
 
 
 def lambda_handler(event, context):
-    sql_util = SqlUtil()
-    sql_util.create_table()
-    sql_util.insert_twitterid(1300452125458067457)
     tweet_util = TweetUtil()
+    user_registry = UserRegistry()
     kusorep_task_excuter = KusorepTaskExcuter()
+
+    user_registry.add_user()
+    user_registry.remove_user()
     tweet_id_list, tweet_text_list = tweet_util.get_timeline()
     reply_tweet_id_list, reply_text_list = kusorep_task_excuter.find_kusorepscore_reply_candidate()
     if len(tweet_id_list) != 0:
