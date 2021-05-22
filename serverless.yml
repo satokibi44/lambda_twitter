@@ -6,7 +6,7 @@ provider:
   stage: ${opt:stage, self:custom.defaultStage}
   vpc:
     securityGroupIds:
-      - sg-3092424e
+      - sg-013a7a918a69b5283
     subnetIds:
       - subnet-0ad6f3ea75e839ea0
   environment:
