@@ -5,10 +5,10 @@ import sys
 class SqlUtil():
 
     def __init__(self):
-        rds_host = "testdb.cwomgpjrietf.us-east-2.rds.amazonaws.com"
+        rds_host = "kusorep-twitter.cwomgpjrietf.us-east-2.rds.amazonaws.com"
         password = "sato310238"
         name = "admin"
-        db_name = "ExampleDB"
+        db_name = "UserDB"
         try:
             self.conn = pymysql.connect(
                 host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
