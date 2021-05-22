@@ -4,10 +4,12 @@ from Utils.TweetUtil import TweetUtil
 from Utils.SqlUtil import SqlUtil
 import requests
 
+
 def lambda_handler(event, context):
-    tweet_util = TweetUtil()
     sql_util = SqlUtil()
     sql_util.create_table()
+    sql_util.insert_user(1300452125458067457)
+    tweet_util = TweetUtil()
     tweet_id_list, tweet_text_list = tweet_util.get_timeline()
     reply_tweet_id_list, reply_text_list = tweet_util.get_reply()
     if len(tweet_id_list) != 0:
