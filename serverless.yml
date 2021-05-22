@@ -8,7 +8,7 @@ provider:
     securityGroupIds:
       - sg-3092424e
     subnetIds:
-      - subnet-7f130705
+      - subnet-0ad6f3ea75e839ea0
   environment:
     SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
 

@@ -1,6 +1,7 @@
 import pymysql
 import sys
 
+
 class SqlUtil():
 
     def __init__(self):
@@ -9,13 +10,14 @@ class SqlUtil():
         name = "admin"
         db_name = "ExampleDB"
         try:
-            self.conn = pymysql.connect(host=rds_host, user=name,passwd=password, db=db_name, connect_timeout=5)
+            self.conn = pymysql.connect(
+                host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
         except pymysql.MySQLError as e:
             sys.exit()
-    
+
     def create_table(self):
         with self.conn.cursor() as cur:
-            create_sql = 'create table if not exist User ( UserID int NOT NULL AUTO_INCREMENT, TwitterID int NOT NULL)'
+            create_sql = 'create table if not exists User (TwitterID int NOT NULL)'
             cur.execute(create_sql)
             self.conn.commit()
         self.conn.commit()
@@ -23,16 +25,16 @@ class SqlUtil():
     def insert_user(self, twitter_id):
         with self.conn.cursor() as cur:
             insert_sql = 'insert into User (TwitterID) values (%s)'
-            cur.execute(insert_sql,(twitter_id))
+            cur.execute(insert_sql, (twitter_id))
             self.conn.commit()
         self.conn.commit()
-    
+
     def select_twitterid(self):
         user_id_list = []
         with self.conn.cursor() as cur:
             cur.execute("select TwitterID from User")
             for row in cur:
-                user_id_list.append(row)
+                user_id_list.append(int(row[0]))
         self.conn.commit()
         return user_id_list
 
