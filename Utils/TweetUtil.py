@@ -1,10 +1,8 @@
 from requests_oauthlib import OAuth1Session
-import urllib.request
 import json
 
 import os
 import requests
-import pickle
 
 from Utils.S3Util import S3Util
 from Utils.SqlUtil import SqlUtil
