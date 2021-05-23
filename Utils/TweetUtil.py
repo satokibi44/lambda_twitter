@@ -25,29 +25,10 @@ class TweetUtil():
     def get_timeline(self):
         url = "https://api.twitter.com/1.1/statuses/home_timeline.json?count=200"
         res = self.session.get(url=url)
-        tweet_id_list = []
-        tweet_text_list = []
-        latest_tweet_id = 0
-        latest_tweet_id_write = 0
-        s3_util = S3Util()
-        tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
             timelines = res.json()
-            latest_tweet_id = s3_util.read_latest_tweet_id(
-                "latest_tweet_id.txt")
-            for tweet in timelines:
-                if (tweet['user']['id'] in self.user_id_list):
-                    if (tweet['id'] > int(latest_tweet_id)):
-                        tweet_id = tweet['id']
-                        tweet_text = tweet_formetter.screening(tweet['text'])
-                        tweet_id_list.append(tweet_id)
-                        tweet_text_list.append(tweet_text)
-                        if latest_tweet_id_write == 0:
-                            latest_tweet_id_write = tweet['id']
-            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(
-                int(latest_tweet_id), int(latest_tweet_id_write)))
-            return tweet_id_list, tweet_text_list
+            return timelines
         else:
             print("ERROR : %d" % res.status_code)
         return

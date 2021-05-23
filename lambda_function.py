@@ -1,7 +1,7 @@
 # coding: utf-8
 import json
 from Utils.TweetUtil import TweetUtil
-from KusorepTaskExecuter import KusorepTaskExcuter
+from FindKusorepTask import FindKusorepTask
 from UserRegistry import UserRegistry
 import requests
 
@@ -9,12 +9,12 @@ import requests
 def lambda_handler(event, context):
     tweet_util = TweetUtil()
     user_registry = UserRegistry()
-    kusorep_task_excuter = KusorepTaskExcuter()
+    find_kusorep_task = FindKusorepTask()
 
     user_registry.add_user()
     user_registry.remove_user()
-    tweet_id_list, tweet_text_list = tweet_util.get_timeline()
-    reply_tweet_id_list, reply_text_list = kusorep_task_excuter.find_kusorepscore_reply_candidate()
+    tweet_id_list, tweet_text_list = find_kusorep_task.find_candidate_send_kusorep()
+    reply_tweet_id_list, reply_text_list = find_kusorep_task.find_candidate_send_kusorepscore()
     if len(tweet_id_list) != 0:
         for i in range(len(tweet_id_list)):
             tweet_util.excute_reply(tweet_text_list[i], tweet_id_list[i])

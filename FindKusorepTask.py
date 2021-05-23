@@ -2,9 +2,9 @@ from Utils.TweetUtil import TweetUtil
 from Utils.S3Util import S3Util
 from TweetFormetter import TweetFormetter
 
-class KusorepTaskExcuter():
+class FindKusorepTask():
 
-    def find_kusorepscore_reply_candidate(self):
+    def find_candidate_send_kusorepscore(self):
         tweet_id_list = []
         tweet_text_list = []
         latest_reply_id = 0
@@ -28,4 +28,25 @@ class KusorepTaskExcuter():
             s3_util.write_latest_tweet_id("latest_reply_id.txt", max(
                 int(latest_reply_id_write), int(latest_reply_id)))
 
+        return tweet_id_list, tweet_text_list
+
+    def find_candidate_send_kusorep(self):
+        tweet_id_list = []
+        tweet_text_list = []
+        s3_util = S3Util()
+        tweet_util = TweetUtil()
+        tweet_formetter = TweetFormetter()
+
+        timelines = tweet_util.get_timeline()
+        latest_tweet_id = s3_util.read_latest_tweet_id("latest_tweet_id.txt")
+        for tweet in timelines:
+            if (tweet['user']['id'] in self.user_id_list):
+                if (tweet['id'] > int(latest_tweet_id)):
+                    tweet_id = tweet['id']
+                    tweet_text = tweet_formetter.screening(tweet['text'])
+                    tweet_id_list.append(tweet_id)
+                    tweet_text_list.append(tweet_text)
+                    if latest_tweet_id_write == 0:
+                        latest_tweet_id_write = tweet['id']
+        s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(int(latest_tweet_id), int(latest_tweet_id_write)))
         return tweet_id_list, tweet_text_list
