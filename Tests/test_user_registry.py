@@ -1,5 +1,5 @@
 import unittest
-from ..Utils.TweetUtil import TweetUtil
+from Utils.TweetUtil import TweetUtil
 class TestUserRegistry():
     def test_add_user():
         is_tweet = False
