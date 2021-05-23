@@ -1,12 +1,6 @@
 from requests_oauthlib import OAuth1Session
-import json
 
 import os
-import requests
-
-from Utils.S3Util import S3Util
-from Utils.SqlUtil import SqlUtil
-from TweetFormetter import TweetFormetter
 
 
 class TweetUtil():

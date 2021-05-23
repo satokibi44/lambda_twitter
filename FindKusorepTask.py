@@ -45,6 +45,8 @@ class FindKusorepTask():
     def find_candidate_send_kusorep(self):
         tweet_id_list = []
         tweet_text_list = []
+        latest_tweet_id = 0
+        latest_tweet_id_write = 0
         s3_util = S3Util()
         tweet_util = TweetUtil()
         tweet_formetter = TweetFormetter()
