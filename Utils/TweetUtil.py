@@ -25,29 +25,10 @@ class TweetUtil():
     def get_timeline(self):
         url = "https://api.twitter.com/1.1/statuses/home_timeline.json?count=200"
         res = self.session.get(url=url)
-        tweet_id_list = []
-        tweet_text_list = []
-        latest_tweet_id = 0
-        latest_tweet_id_write = 0
-        s3_util = S3Util()
-        tweet_formetter = TweetFormetter()
 
         if res.status_code == 200:
             timelines = res.json()
-            latest_tweet_id = s3_util.read_latest_tweet_id(
-                "latest_tweet_id.txt")
-            for tweet in timelines:
-                if (tweet['user']['id'] in self.user_id_list):
-                    if (tweet['id'] > int(latest_tweet_id)):
-                        tweet_id = tweet['id']
-                        tweet_text = tweet_formetter.screening(tweet['text'])
-                        tweet_id_list.append(tweet_id)
-                        tweet_text_list.append(tweet_text)
-                        if latest_tweet_id_write == 0:
-                            latest_tweet_id_write = tweet['id']
-            s3_util.write_latest_tweet_id("latest_tweet_id.txt", max(
-                int(latest_tweet_id), int(latest_tweet_id_write)))
-            return tweet_id_list, tweet_text_list
+            return timelines
         else:
             print("ERROR : %d" % res.status_code)
         return
@@ -63,47 +44,10 @@ class TweetUtil():
             print("ERROR : %d" % res.status_code)
         return
 
-    def excute_reply(self, tweet_text, tweet_id):
-        url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-master-api"
-        param = {'text': tweet_text}
-        res = requests.post(url, data=json.dumps(param))
-        req_body = res.json()
-        reply = ""
-        try:
-            reply = "クソリプAI「"+req_body['decode_sentence']+"」"
-        except KeyError as e:
-            print(e)
-            return
-
-        print("decode_sentence:", reply)
+    def excute_reply(self, reply_text, tweet_id):
 
         url = "https://api.twitter.com/1.1/statuses/update.json"
-        params = {"status": reply, "in_reply_to_status_id": tweet_id,
-                  "auto_populate_reply_metadata": True}
-
-        response = self.session.post(url, params=params)
-        if response.status_code == 200:
-            print("Succeed!")
-        else:
-            print("ERROR : %d" % response.status_code)
-        return
-
-    def execute_calculate_kusoripuscore(self, tweet_text, tweet_id):
-        url = "http://ecs-hands-on-1730037631.us-east-2.elb.amazonaws.com/KusorepCalculater/"
-        param = {'msg': tweet_text}
-        res = requests.get(url, params=param)
-        req_body = res.json()
-        kusoripu_score = ""
-        try:
-            kusoripu_score = req_body['body']['kusoripu_score']
-        except KeyError as e:
-            print(e)
-            return
-
-        print("kusoripu_score:", kusoripu_score)
-
-        url = "https://api.twitter.com/1.1/statuses/update.json"
-        params = {"status": "このツイートのクソリプ度は，"+str(kusoripu_score)+"点です．", "in_reply_to_status_id": tweet_id,
+        params = {"status": reply_text, "in_reply_to_status_id": tweet_id,
                   "auto_populate_reply_metadata": True}
 
         response = self.session.post(url, params=params)

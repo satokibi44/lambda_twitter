@@ -1,7 +1,9 @@
+# .github/workflows/test.yml
+
 on:
   pull_request:
     branches:
-      - [develop, master]
+      - develop
 
 name: RUN pyunit
 
@@ -17,7 +19,7 @@ jobs:
       - name: Install pipenv and dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ./Docker/requirements.txt
+          pip install requests_oauthlib requests　
 
       - name: Run Tests
         run:  python -m unittest
