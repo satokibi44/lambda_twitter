@@ -1,8 +1,20 @@
 from Utils.TweetUtil import TweetUtil
 from Utils.S3Util import S3Util
 from TweetFormetter import TweetFormetter
+from Utils.SqlUtil import SqlUtil
 
 class FindKusorepTask():
+
+    def __init__(self):
+        sql_util = SqlUtil()
+        sql_util.create_table()
+        self.user_id_list = sql_util.select_twitterid()
+
+    def find_candidate_regist_userlist():
+        pass
+
+    def find_candidate_delete_userlist():
+        pass
 
     def find_candidate_send_kusorepscore(self):
         tweet_id_list = []

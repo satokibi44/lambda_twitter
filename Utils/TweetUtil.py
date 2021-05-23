@@ -17,9 +17,6 @@ class TweetUtil():
         self.AT = os.environ['AT']
         self.AS = os.environ['AS']
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
-        sql_util = SqlUtil()
-        sql_util.create_table()
-        self.user_id_list = sql_util.select_twitterid()
         self.my_twitter_id = 3282531025
 
     def get_timeline(self):
