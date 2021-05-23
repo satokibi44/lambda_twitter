@@ -16,6 +16,14 @@ jobs:
         with:
           ref: develop
 
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Run Tests
+        run:  python -m unittest
+
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
