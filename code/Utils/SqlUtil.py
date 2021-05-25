@@ -2,6 +2,7 @@ import pymysql
 import sys
 import os
 
+
 class SqlUtil():
 
     def __init__(self):
@@ -24,27 +25,25 @@ class SqlUtil():
 
     def create_latestid_table(self):
         with self.conn.cursor() as cur:
-            create_sql = 'create table if not exists LatestID (Type VARCHAR(255) NOT NULL, TwitterID BIGINT NOT NULL)'
+            create_sql = 'create table if not exists latestID2 (Type VARCHAR(255) NOT NULL PRIMARY KEY, TwitterID BIGINT NOT NULL)'
             cur.execute(create_sql)
             self.conn.commit()
         self.conn.commit()
 
-    def insert_latestid(self,type,id):
+    def insert_latestid(self, type, id):
         with self.conn.cursor() as cur:
-            #todo:add update function
-            insert_sql = 'INSERT INTO LatestID(Type, TwitterID) VALUES (%s, %s) ON duplicate KEY UPDATE Type = %s, TwitterID = %s'
+            insert_sql = 'INSERT INTO latestID2(Type, TwitterID) VALUES (%s, %s) ON duplicate KEY UPDATE Type = %s, TwitterID = %s'
             cur.execute(insert_sql, (type, id, type, id))
             self.conn.commit()
-    
+
     def select_latestid(self, type):
         with self.conn.cursor() as cur:
-            select_sql = 'select TwitterID from LatestID Where Type = %s'
+            select_sql = 'select TwitterID from latestID2 Where Type = %s'
             cur.execute(select_sql, (type))
-            if(len[cur]==0):
-                self.conn.commit()
-                return 0
-            self.conn.commit()
-            return cur[0]
+            for row in cur:
+                print(int(row[0]))
+                return int(row[0])
+            return 0
 
     def insert_twitterid(self, twitter_id):
         with self.conn.cursor() as cur:

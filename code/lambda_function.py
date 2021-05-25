@@ -10,15 +10,15 @@ import requests
 def lambda_handler(event, context):
     tweet_util = TweetUtil()
     user_registry = UserRegistry()
+    user_registry.user_manager()
     find_kusorep_task = FindKusorepTask()
     kusorep_task_excuter = KusorepTaskExcuter()
-
-    user_registry.user_manager()
     tweet_id_list, tweet_text_list = find_kusorep_task.find_candidate_send_kusorep()
     reply_tweet_id_list, reply_text_list = find_kusorep_task.find_candidate_send_kusorepscore()
     if len(tweet_id_list) != 0:
         for i in range(len(tweet_id_list)):
             kusorep = kusorep_task_excuter.make_kusorep(tweet_text_list[i])
+            print(kusorep)
             tweet_util.excute_reply(kusorep, tweet_id_list[i])
     else:
         url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-master-api"
