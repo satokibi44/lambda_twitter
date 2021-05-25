@@ -25,7 +25,6 @@ jobs:
           npm install
       - name: Deploy to Lambda
         run: |
-          cd code
           sls plugin install -n serverless-python-requirements
           sls deploy --stage master
         env:
