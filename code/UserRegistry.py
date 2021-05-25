@@ -28,11 +28,15 @@ class UserRegistry():
                     print("Hey!クソリプbot，クソリプを送って")
                     self.sql_util.insert_twitterid(tweet['user']['id'])
                     latest_registration_tweetid = tweet['id']
+                    reply_text = "登録しました．"
+                    tweet_util.excute_reply(reply_text, tweet['id'])
 
                 elif (tweet_text == "Hey!クソリプbot，クソリプを送らないで"):
                     print("Hey!クソリプbot，クソリプを送らないで")
                     self.sql_util.delete_twitterid(tweet['user']['id'])
                     latest_registration_tweetid = tweet['id']
+                    reply_text = "登録解除しました．"
+                    tweet_util.excute_reply(reply_text, tweet['id'])
         self.sql_util.insert_latestid(
             "latest_registration_twitterid", latest_registration_tweetid)
 
