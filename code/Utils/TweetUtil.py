@@ -26,7 +26,7 @@ class TweetUtil():
 
     def get_reply(self, keyword):
         url = "https://api.twitter.com/1.1/search/tweets.json"
-        params = {'q': '"'+keyword+'"', 'count': 200}  # 取得数
+        params = {'q': keyword, 'count': 200}  # 取得数
         res = self.session.get(url, params=params)
         if res.status_code == 200:
             timelines = res.json()['statuses']

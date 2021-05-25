@@ -25,7 +25,7 @@ class FindKusorepTask():
         tweet_util = TweetUtil()
         tweet_formetter = TweetFormetter()
 
-        timelines = tweet_util.get_reply("クソリプ判定:")
+        timelines = tweet_util.get_reply('"クソリプ判定:"')
         latest_reply_id = s3_util.read_latest_tweet_id("latest_reply_id.txt")
         for tweet in timelines:
             tweet_text = tweet_formetter.screening(tweet['text'])

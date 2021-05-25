@@ -22,6 +22,30 @@ class SqlUtil():
             self.conn.commit()
         self.conn.commit()
 
+    def create_latestid_table(self):
+        with self.conn.cursor() as cur:
+            create_sql = 'create table if not exists LatestID (Type VARCHAR(255) NOT NULL, TwitterID BIGINT NOT NULL)'
+            cur.execute(create_sql)
+            self.conn.commit()
+        self.conn.commit()
+
+    def insert_latestid(self,type,id):
+        with self.conn.cursor() as cur:
+            #todo:add update function
+            insert_sql = 'INSERT INTO LatestID(Type, TwitterID) VALUES (%s, %s) ON duplicate KEY UPDATE Type = %s, TwitterID = %s'
+            cur.execute(insert_sql, (type, id, type, id))
+            self.conn.commit()
+    
+    def select_latestid(self, type):
+        with self.conn.cursor() as cur:
+            select_sql = 'select TwitterID from LatestID Where Type = %s'
+            cur.execute(select_sql, (type))
+            if(len[cur]==0):
+                self.conn.commit()
+                return 0
+            self.conn.commit()
+            return cur[0]
+
     def insert_twitterid(self, twitter_id):
         with self.conn.cursor() as cur:
             insert_sql = 'INSERT INTO User (TwitterID) SELECT %s WHERE NOT EXISTS (SELECT * FROM User WHERE TwitterID = %s)'
