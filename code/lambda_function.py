@@ -13,8 +13,7 @@ def lambda_handler(event, context):
     find_kusorep_task = FindKusorepTask()
     kusorep_task_excuter = KusorepTaskExcuter()
 
-    user_registry.add_user()
-    user_registry.remove_user()
+    user_registry.user_manager()
     tweet_id_list, tweet_text_list = find_kusorep_task.find_candidate_send_kusorep()
     reply_tweet_id_list, reply_text_list = find_kusorep_task.find_candidate_send_kusorepscore()
     if len(tweet_id_list) != 0:
