@@ -4,7 +4,8 @@ from Utils.SqlUtil import SqlUtil
 class UserRegistry():
     def __init__(self) -> None:
         self.sql_util = SqlUtil()
-        self.sql_util.create_table("User")
+        self.sql_util.create_table()
+        pass
 
     def add_user(self):
         tweet_util = TweetUtil()

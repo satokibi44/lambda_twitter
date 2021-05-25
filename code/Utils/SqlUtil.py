@@ -15,10 +15,10 @@ class SqlUtil():
         except pymysql.MySQLError as e:
             sys.exit()
 
-    def create_table(self, table_name):
+    def create_table(self):
         with self.conn.cursor() as cur:
-            create_sql = 'create table if not exists %s (TwitterID BIGINT NOT NULL)'
-            cur.execute(create_sql,(table_name))
+            create_sql = 'create table if not exists User (TwitterID BIGINT NOT NULL)'
+            cur.execute(create_sql)
             self.conn.commit()
         self.conn.commit()
 
