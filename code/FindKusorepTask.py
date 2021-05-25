@@ -7,7 +7,7 @@ class FindKusorepTask():
 
     def __init__(self):
         sql_util = SqlUtil()
-        sql_util.create_table()
+        sql_util.create_table("User")
         self.user_id_list = sql_util.select_twitterid()
 
     def find_candidate_regist_userlist():
