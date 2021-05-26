@@ -45,6 +45,27 @@ class SqlUtil():
                 return int(row[0])
             return 0
 
+    def create_calculate_kusorep_user_table(self):
+        with self.conn.cursor() as cur:
+            create_sql = 'create table if not exists CalculateKusorepUser (AccountName VARCHAR(255) NOT NULL PRIMARY KEY)'
+            cur.execute(create_sql)
+            self.conn.commit()
+        self.conn.commit()
+
+    def insert_calculate_kusorep_user(self, account_name):
+        with self.conn.cursor() as cur:
+            insert_sql = 'INSERT INTO CalculateKusorepUser (AccountName) SELECT %s WHERE NOT EXISTS (SELECT * FROM CalculateKusorepUser WHERE AccountName = %s)'
+            cur.execute(insert_sql, (account_name, account_name))
+            self.conn.commit()
+        self.conn.commit()
+    
+    def delete_calculate_kusorep_user(self, account_name):
+        with self.conn.cursor() as cur:
+            delete_sql = 'delete from CalculateKusorepUser where AccountName = %s'
+            cur.execute(delete_sql, (account_name))
+            self.conn.commit()
+        self.conn.commit()
+
     def insert_twitterid(self, twitter_id):
         with self.conn.cursor() as cur:
             insert_sql = 'INSERT INTO User (TwitterID) SELECT %s WHERE NOT EXISTS (SELECT * FROM User WHERE TwitterID = %s)'
