@@ -24,7 +24,7 @@ class UserRegistry():
                 if (tweet['id'] <= int(latest_registration_tweetid)):
                     continue
 
-                if (tweet_text == "Hey!クソリプbot，クソリプを送って"):
+                if (tweet_text == "Hey!クソリプbot，クソリプに対して忠告して"):
                     print("Hey!クソリプbot，クソリプに対して忠告して")
                     self.sql_util.insert_calculate_kusorep_user(
                         tweet['user']['screen_name'], tweet['id'])
@@ -32,7 +32,7 @@ class UserRegistry():
                     reply_text = "登録しました．"
                     tweet_util.excute_reply(reply_text, tweet['id'])
 
-                elif (tweet_text == "Hey!クソリプbot，クソリプを送らないで"):
+                elif (tweet_text == "Hey!クソリプbot，クソリプに対して忠告しないで"):
                     print("Hey!クソリプbot，クソリプに対して忠告しないで")
                     self.sql_util.delete_calculate_kusorep_user(
                         tweet['user']['screen_name'])
