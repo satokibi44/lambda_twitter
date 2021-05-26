@@ -3,7 +3,7 @@ import json
 
 class KusorepTaskExcuter():
 
-    def make_kusorep_score(self, tweet_text):
+    def calculate_kusorep_score(self, tweet_text):
         url = "http://ecs-hands-on-1730037631.us-east-2.elb.amazonaws.com/KusorepCalculater/"
         param = {'msg': tweet_text}
         res = requests.get(url, params=param)
@@ -11,10 +11,11 @@ class KusorepTaskExcuter():
         kusoripu_score = ""
         try:
             kusoripu_score = req_body['body']['kusoripu_score']
+            kusoripu_score = round(kusoripu_score*100)
         except KeyError as e:
             print(e)
             return
-        return "このツイートのクソリプ度は，"+str(kusoripu_score)+"点です．"
+        return kusoripu_score
 
     def make_kusorep(self, tweet_text):
         url = "https://2xa3k3mfyb.execute-api.us-east-2.amazonaws.com/dev/kusoripu-transformer-master-api"

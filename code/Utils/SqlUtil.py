@@ -54,8 +54,9 @@ class SqlUtil():
 
     def insert_calculate_kusorep_user(self, account_name, tweet_id):
         with self.conn.cursor() as cur:
-            insert_sql = 'INSERT INTO KusorepScoringUser(AccountName, LatestID) VALUES (%s, %s) ON duplicate KEY UPDATE Type = %s, LatestID = %s'
-            cur.execute(insert_sql, (account_name, tweet_id, account_name, tweet_id))
+            insert_sql = 'INSERT INTO KusorepScoringUser(AccountName, LatestID) VALUES (%s, %s) ON duplicate KEY UPDATE AccountName = %s, LatestID = %s'
+            cur.execute(insert_sql, (account_name,
+                                     tweet_id, account_name, tweet_id))
             self.conn.commit()
         self.conn.commit()
     
