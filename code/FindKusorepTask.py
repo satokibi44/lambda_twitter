@@ -25,23 +25,21 @@ class FindKusorepTask():
         tweet_util = TweetUtil()
         tweet_formetter = TweetFormetter()
         json_util = JsonUtil()
-
-        timelines = tweet_util.get_reply('"クソリプ判定:"')
-        timelines = json_util.sort_reply_with_id(timelines)
-        latest_reply_id = self.sql_util.select_latestid(
-            "latest_reply_id")
+        timelines = {}
+        calculate_kusorep_user, latest_reply_id = self.sql_util.select_calculate_kusorep_user()
+        for index, user_name in enumerate(calculate_kusorep_user):
+            timeline = tweet_util.get_reply("to:" +
+                                            user_name, latest_reply_id[index])
+            timeline = json_util.sort_reply_with_id(timeline)
+            self.sql_util.insert_calculate_kusorep_user(
+                timeline[-1]['user']['screen_name'], timeline[-1]['id'])
+            timelines += timeline
         for tweet in timelines:
             tweet_text = tweet_formetter.screening(tweet['text'])
-            if (tweet['id'] <= int(latest_reply_id)):
-                continue
             if (tweet['in_reply_to_user_id'] == tweet_util.my_twitter_id and tweet_text[:7] == "クソリプ判定:"):
                 tweet_id = tweet['id']
                 tweet_id_list.append(tweet_id)
                 tweet_text_list.append(tweet_text[7:])
-                latest_reply_id = tweet['id']
-
-        self.sql_util.insert_latestid(
-            "latest_reply_id", latest_reply_id)
 
         return tweet_id_list, tweet_text_list
 

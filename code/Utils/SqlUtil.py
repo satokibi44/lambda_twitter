@@ -47,12 +47,12 @@ class SqlUtil():
 
     def create_calculate_kusorep_user_table(self):
         with self.conn.cursor() as cur:
-            create_sql = 'create table if not exists CalculateKusorepUser (AccountName VARCHAR(255) NOT NULL PRIMARY KEY)'
+            create_sql = 'create table if not exists CalculateKusorepUser (AccountName VARCHAR(255) NOT NULL PRIMARY KEY, LatestID BIGINT NOT NULL)'
             cur.execute(create_sql)
             self.conn.commit()
         self.conn.commit()
 
-    def insert_calculate_kusorep_user(self, account_name):
+    def insert_calculate_kusorep_user(self, account_name, tweet_id):
         with self.conn.cursor() as cur:
             insert_sql = 'INSERT INTO CalculateKusorepUser (AccountName) SELECT %s WHERE NOT EXISTS (SELECT * FROM CalculateKusorepUser WHERE AccountName = %s)'
             cur.execute(insert_sql, (account_name, account_name))
@@ -65,6 +65,18 @@ class SqlUtil():
             cur.execute(delete_sql, (account_name))
             self.conn.commit()
         self.conn.commit()
+
+    def select_calculate_kusorep_user(self):
+        user_name_list = []
+        tweet_id_list = []
+        with self.conn.cursor() as cur:
+            cur.execute(
+                "select AccountName, LatestID from CalculateKusorepUser")
+            for row in cur:
+                user_name_list.append(row[0])
+                tweet_id_list.append(int(row[1]))
+        self.conn.commit()
+        return user_name_list, tweet_id_list
 
     def insert_twitterid(self, twitter_id):
         with self.conn.cursor() as cur:
