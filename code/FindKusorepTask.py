@@ -32,7 +32,6 @@ class FindKusorepTask():
         for index, user_name in enumerate(calculate_kusorep_user):
             timeline = tweet_util.get_reply("to:@" +
                                             user_name, latest_reply_id[index])
-            print("timeline", timeline)
             timeline = json_util.sort_reply_with_id(timeline)
             if(len(timeline) == 0):continue
             self.sql_util.insert_calculate_kusorep_user(user_name, timeline[-1]['id'])
