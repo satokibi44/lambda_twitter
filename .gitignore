@@ -1,5 +1,6 @@
 # .txtは容量オーバになるのでいらない
-*.txt
+latest_reply_id.txt
+latest_tweet_id.txt
 # caheもいらない
 *.pyc
 # ptは容量オーバー
