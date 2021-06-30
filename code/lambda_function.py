@@ -5,16 +5,17 @@ from FindKusorepTask import FindKusorepTask
 from UserRegistry import UserRegistry
 from KusorepTaskExcuter import KusorepTaskExcuter
 import requests
-
+import os
 
 def lambda_handler(event, context):
-    tweet_util = TweetUtil()
+    tweet_util = TweetUtil(os.environ['AT'], os.environ['AS'])
     user_registry = UserRegistry()
     user_registry.user_manager()
     find_kusorep_task = FindKusorepTask()
     kusorep_task_excuter = KusorepTaskExcuter()
     tweet_id_list, tweet_text_list = find_kusorep_task.find_candidate_send_kusorep()
     reply_tweet_id_list, reply_text_list = find_kusorep_task.find_candidate_send_kusorepscore()
+    find_kusorep_task.find_candidate_mute()
     if len(tweet_id_list) != 0:
         for i in range(len(tweet_id_list)):
             kusorep = kusorep_task_excuter.make_kusorep(tweet_text_list[i])

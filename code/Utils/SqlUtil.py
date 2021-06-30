@@ -101,3 +101,13 @@ class SqlUtil():
             cur.execute(delete_sql, (twitter_id))
             self.conn.commit()
         self.conn.commit()
+
+    def select_twitterid(self):
+        mute_kusorep_user_info = []
+        with self.conn.cursor() as cur:
+            cur.execute("select * from User")
+            for row in cur:
+                mute_kusorep_user_info.append(
+                    {"oauth_token": row[0], "oauth_verifier": row[1], "user_id": row[2], "screen_name": row[3]})
+        self.conn.commit()
+        return mute_kusorep_user_info
