@@ -31,5 +31,6 @@ class KusorepTaskExcuter():
     def execute_mute(self, user_id_list, tweet_text_list, tweet_util):
         for i, v in enumerate(user_id_list):
             kusorep_score = self.calculate_kusorep_score(tweet_text_list[i])
-            if(kusorep_score>=60):
+            print(tweet_text_list[i]+" is "+str(kusorep_score))
+            if(kusorep_score >= 60):
                 tweet_util.excute_mute(v)
