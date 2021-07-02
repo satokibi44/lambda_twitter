@@ -59,7 +59,7 @@ class SqlUtil():
                                      tweet_id, account_name, tweet_id))
             self.conn.commit()
         self.conn.commit()
-    
+        
     def delete_calculate_kusorep_user(self, account_name):
         with self.conn.cursor() as cur:
             delete_sql = 'delete from KusorepScoringUser where AccountName = %s'
@@ -102,11 +102,13 @@ class SqlUtil():
             self.conn.commit()
         self.conn.commit()
 
-    def select_twitterid(self):
+    def select_mute_kusorep_user(self):
         mute_kusorep_user_info = []
         with self.conn.cursor() as cur:
-            cur.execute("select * from User")
+            cur.execute("select * from UserOath2")
             for row in cur:
+                if(row[2] == "3282531025"):
+                    continue
                 mute_kusorep_user_info.append(
                     {"oauth_token": row[0], "oauth_verifier": row[1], "user_id": row[2], "screen_name": row[3]})
         self.conn.commit()
