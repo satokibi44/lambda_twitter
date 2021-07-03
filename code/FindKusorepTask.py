@@ -43,9 +43,9 @@ class FindKusorepTask():
                 if (tweet['id'] <= int(latest_tweet_id)):
                     continue
                 if (tweet['user']['id'] != tweet_util.my_twitter_id):
-                    user_id = str(tweet['user']['id'])
+                    mute_user_id = str(tweet['user']['id'])
                     tweet_text = tweet_formetter.screening(tweet['text'])
-                    user_id_list.append(user_id)
+                    user_id_list.append(mute_user_id)
                     tweet_text_list.append(tweet_text)
                     latest_tweet_id = tweet['id']
             kusorep_task_executer = KusorepTaskExcuter()
