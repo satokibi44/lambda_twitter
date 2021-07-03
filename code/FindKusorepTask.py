@@ -35,6 +35,7 @@ class FindKusorepTask():
             json_util = JsonUtil()
 
             timelines = tweet_util.get_mute_user_reply()
+            if(timelines is None):continue
             timelines = json_util.sort_reply_with_id(timelines)
             latest_tweet_id = self.sql_util.select_latestid(
                 "latest_tweet_user"+user_id)
@@ -47,12 +48,11 @@ class FindKusorepTask():
                     user_id_list.append(user_id)
                     tweet_text_list.append(tweet_text)
                     latest_tweet_id = tweet['id']
-            self.sql_util.insert_latestid(
-                "latest_tweet_user"+user_id, latest_tweet_id)
             kusorep_task_executer = KusorepTaskExcuter()
             kusorep_task_executer.execute_mute(
                 user_id_list, tweet_text_list, tweet_util)
-
+            self.sql_util.insert_latestid(
+                "latest_tweet_user"+user_id, latest_tweet_id)
         return
 
     def find_candidate_send_kusorepscore(self):
@@ -69,8 +69,8 @@ class FindKusorepTask():
         for index, user_name in enumerate(calculate_kusorep_user):
             timeline = tweet_util.get_reply("to:@" +
                                             user_name, latest_reply_id[index])
-            timeline = json_util.sort_reply_with_id(timeline)
             if(len(timeline) == 0):continue
+            timeline = json_util.sort_reply_with_id(timeline)
             self.sql_util.insert_calculate_kusorep_user(user_name, timeline[-1]['id'])
             timelines += timeline
         for tweet in timelines:
