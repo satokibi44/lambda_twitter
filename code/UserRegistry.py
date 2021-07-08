@@ -2,6 +2,7 @@ from Utils.TweetUtil import TweetUtil
 from Utils.SqlUtil import SqlUtil
 from TweetFormetter import TweetFormetter
 from Utils.JsonUtil import JsonUtil
+import os
 
 class UserRegistry():
     def __init__(self) -> None:
@@ -10,7 +11,7 @@ class UserRegistry():
         self.sql_util.create_calculate_kusorep_user_table()
 
     def user_manager(self):
-        tweet_util = TweetUtil()
+        tweet_util = TweetUtil(os.environ['AT'], os.environ['AS'])
         tweet_formatter = TweetFormetter()
         json_util = JsonUtil()
         timelines = tweet_util.get_reply(
@@ -43,14 +44,14 @@ class UserRegistry():
             "latest_registration_twitterid", latest_registration_tweetid)
 
     def add_user(self):
-        tweet_util = TweetUtil()
+        tweet_util = TweetUtil(os.environ['AT'], os.environ['AS'])
         timelines = tweet_util.get_reply("Hey!クソリプbot，クソリプを送って")
         for tweet in timelines:
             if (tweet['in_reply_to_user_id'] == tweet_util.my_twitter_id):
                 self.sql_util.insert_twitterid(tweet['user']['id'])
 
     def remove_user(self):
-        tweet_util = TweetUtil()
+        tweet_util = TweetUtil(os.environ['AT'], os.environ['AS'])
         timelines = tweet_util.get_reply("Hey!クソリプbot，クソリプを送らないで")
         for tweet in timelines:
             if (tweet['in_reply_to_user_id'] == tweet_util.my_twitter_id):
