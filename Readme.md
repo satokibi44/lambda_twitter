@@ -21,7 +21,7 @@
 クソリプを防ぐ様々なアプリが開発されれば，もっと社会はよくなると思ったので，クソリプ計算をAPI化した．
 
 ## シーケンス図
-<img width="380" alt="シーケンス図" src="https://user-images.githubusercontent.com/52820882/134812990-bd85358d-798e-4ee8-87f2-cf051ea696ec.png">
+<img alt="シーケンス図" src="https://user-images.githubusercontent.com/52820882/134813318-4d2c9b8d-5cab-43bb-8936-9fd2ee1aed66.png">
 
 ## 使用技術
 Python, MySQL,AWS(lambda, RDS, Cloudwatch, NatGateway, VPC, subnet) Docker, github actions, serverless framework
