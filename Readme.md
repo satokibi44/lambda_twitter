@@ -3,15 +3,15 @@
 近年，ネットリンチが社会問題になりつつある．
 2020年5月にはプロレスラーの木村花 様がTwitterによる誹謗中傷が原因で自死する事件が起きた．本稿では，このように誹謗中傷などのクソリプが原因で自殺する人や心を病んでしまう人が社会問題となりつつある中で，ネットリンチを受けている人を救う目的と，ネットリンチしている人に「ネットリンチが罪である事」を認知させるための「クソリプと誹謗中傷をなくそうプロジェクト」を提案する．
 
-<img src="./img/example.png" width="380">
+<img width="380" alt="クソリプ警告" src="https://user-images.githubusercontent.com/52820882/134812732-fa0ce121-5403-4f31-8529-850654666c89.png">
 
 ## 機能
-1. AIがクソリプを送ってきたユーザーをミュートする．
-
-    [ここ](https://41pu0ds06l.execute-api.us-east-2.amazonaws.com/default/twitter-api-callback?oauth_token=a&oauth_verifier=a)で連携アプリを承認後使えるようになる
+1. AIがクソリプ(クソリプ度が60点以上のクソリプ)を送ってきたユーザーを自動ミュートする．
+    [ここ](https://41pu0ds06l.execute-api.us-east-2.amazonaws.com/default/twitter-api-callback?oauth_token=a&oauth_verifier=a)で連携アプリを承認後使えるようになる．
 2. AIがクソリプに対し警告する．
+    Twitterで[@satokibi44](https://twitter.com/satokibi44)宛に「Hey!クソリプbot，クソリプに対して警告して」とリプライを送信することでユーザー登録，ユーザー登録をすることで俺([@satokibi44](https://twitter.com/satokibi44))がクソリプに対して警告する．
     
-    Twitterで[@satokibi44](https://twitter.com/satokibi44)宛に「Hey!クソリプbot，クソリプに対して警告して」とリプライを送信することでユーザー登録，「Hey!クソリプbot，クソリプに対して警告しないで」とリプライを送信することでユーザー登録解除
+    「Hey!クソリプbot，クソリプに対して警告しないで」とリプライを送信することでユーザー登録解除できる．
 
 
 ## 作った理由
@@ -21,7 +21,7 @@
 クソリプを防ぐ様々なアプリが開発されれば，もっと社会はよくなると思ったので，クソリプ計算をAPI化した．
 
 ## 使用技術
-MySQL,AWS(lambda, RDS, Cloudwatch)Docker,github actions, serverless framework
+Python, MySQL,AWS(lambda, RDS, Cloudwatch, NatGateway, VPC, subnet) Docker, github actions, serverless framework
 ## インフラ構造
 クソリプ度を測るAPIは[ここ](https://github.com/satokibi44/Kusorep_API)を参照
 <img src = "./img/infra.png">
