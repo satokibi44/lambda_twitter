@@ -12,16 +12,17 @@
     Twitterで[@satokibi44](https://twitter.com/satokibi44)宛に「Hey!クソリプbot，クソリプに対して警告して」とリプライを送信することでユーザー登録，ユーザー登録をすることで俺([@satokibi44](https://twitter.com/satokibi44))がクソリプに対して警告する．
     
     「Hey!クソリプbot，クソリプに対して警告しないで」とリプライを送信することでユーザー登録解除できる．
-
-
 ## 作った理由
 誹謗中傷などのクソリプが原因で自殺する人や心を病んでしまう人が社会問題となっている中で，そのような人たちを救いたいと思ったから．
 
 ## 工夫した点
 クソリプを防ぐ様々なアプリが開発されれば，もっと社会はよくなると思ったので，クソリプ計算をAPI化した．
 
+## シーケンス図
+![シーケンス図](https://user-images.githubusercontent.com/52820882/134812990-bd85358d-798e-4ee8-87f2-cf051ea696ec.png)
+
 ## 使用技術
 Python, MySQL,AWS(lambda, RDS, Cloudwatch, NatGateway, VPC, subnet) Docker, github actions, serverless framework
 ## インフラ構造
 クソリプ度を測るAPIは[ここ](https://github.com/satokibi44/Kusorep_API)を参照
-<img src = "./img/infra.png">
+<img width="704" alt="クソリプ警告のインフラ" src="https://user-images.githubusercontent.com/52820882/134812949-5c0c5c9a-485d-4824-b2a3-7bf80fc07aca.png">
