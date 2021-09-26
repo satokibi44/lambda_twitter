@@ -6,7 +6,7 @@ class KusorepTaskExcuter():
     def calculate_kusorep_score(self, tweet_texts):
         if(len(tweet_texts)==0):
             return []
-        url = "http://ecs-hands-on-1730037631.us-east-2.elb.amazonaws.com/KusorepCalculater/?"
+        url = "http://ecs-hands-on-1730037631.us-east-2.elb.amazonaws.com/kusorep/score/?"
         for i,v in enumerate(tweet_texts):
             if(i == 0):
                 url += "msg="+v
