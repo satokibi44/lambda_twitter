@@ -24,7 +24,7 @@
 <img alt="シーケンス図" src="https://user-images.githubusercontent.com/52820882/134813318-4d2c9b8d-5cab-43bb-8936-9fd2ee1aed66.png">
 
 ## 使用技術
-Python, MySQL,AWS(lambda, RDS, Cloudwatch, NatGateway, VPC, subnet) Docker, github actions, serverless framework
+Python, MySQL,AWS(lambda, RDS, Cloudwatch, NatGateway, VPC, subnet) Twitter Auth, github actions, serverless framework
 ## インフラ構造
 クソリプ度を測るAPIは[ここ](https://github.com/satokibi44/Kusorep_API)を参照
 <img width="704" alt="クソリプ警告のインフラ" src="https://user-images.githubusercontent.com/52820882/134812949-5c0c5c9a-485d-4824-b2a3-7bf80fc07aca.png">
